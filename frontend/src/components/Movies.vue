@@ -23,12 +23,20 @@
         ></textarea>
 
         <button
-          class="btn btn-primary mb-5"
+          class="btn btn-primary m-3"
           v-if="!isEditing"
           @click.prevent="addFilm"
           type="button"
         >
           Add Movie
+        </button>
+        <button
+          class="btn btn-secondary m-3"
+          v-if="!isEditing"
+          @click.prevent="request"
+          type="button"
+        >
+          Request
         </button>
         <button
           class="btn btn-primary mb-5"
@@ -93,11 +101,66 @@ export default {
           Authorization:
             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM1MTcwOTY3LCJleHAiOjE2Mzc3NjI5Njd9.fk8vfoJ7kkCLzfX0-RRGWJZBdeKq6Ip2L0DoodoC31w",
         },
+        auth: {
+          username: "admin",
+          password: "Abcd1234",
+        },
       },
     };
   },
 
   methods: {
+    async request() {
+      const axios = require("axios");
+
+      const movie = {
+        title: "testtitle",
+        director: "testd",
+        description: "Lorem ipsum",
+      };
+
+      const loginInfo = {
+        identifier: "admin",
+        password: "Abcd1234",
+      };
+
+      const user = await axios.post("http://localhost:1338/movies", {
+        auth: {
+          username: "admin",
+          password: "Abcd1234",
+        },
+        data: movie,
+      });
+
+      console.log(user);
+
+      const config = {
+        method: "post",
+        url: "http://localhost:1338/movies",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginInfo),
+        // auth: {
+        //   identifier: "admin",
+        //   password: "Abcd1234",
+        // },
+        // headers: {
+        //   Authorization:
+        //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM1MTcwOTY3LCJleHAiOjE2Mzc3NjI5Njd9.fk8vfoJ7kkCLzfX0-RRGWJZBdeKq6Ip2L0DoodoC31w",
+        //   "Content-Type": "application/json",
+        // },
+        data: movie,
+      };
+      axios(config)
+        .then((response) => {
+          console.log("Auth successful " + response);
+        })
+        .catch((error) => {
+          console.log("Auth error " + error);
+        });
+    },
     addFilm() {
       const axios = require("axios");
 
@@ -135,6 +198,29 @@ export default {
         data: movie,
       };
 
+      // var session_url = "http://localhost:1338/movies";
+      // var username = "stoff";
+      // var password = "Abcd1234";
+      // var credentials = btoa(username + ":" + password);
+      // var basicAuth = "Basic " + credentials;
+      // await axios
+      //   .post(
+      //     session_url,
+      //     {},
+      //     {
+      //       auth: {
+      //         username: username,
+      //         password: password,
+      //       },
+      //     }
+      //   )
+      //   .then(function (response) {
+      //     console.log("Authenticated ->" + response);
+      //   })
+      //   .catch(function (error) {
+      //     console.log("Error on Authentication ->" + error);
+      //   });
+
       // axios
       //   .post(
       //     "http://localhost:1338/movies",
@@ -144,12 +230,12 @@ export default {
       //       description: "POST Test description",
       //     },
       //     {
-      //       // auth: {
-      //       //   username: "admin",
-      //       //   password: "Abcd1234",
-      //       // },
-      //       Authorization: { identifier: "admin ", password: "Abcd1234" },
-      //       "Content-Type": "application/json",
+      //       body: {
+      //         auth: {
+      //           identifier: "admin",
+      //           password: "Abcd1234",
+      //         },
+      //       },
       //     }
       //   )
       //   .then((response) => {
