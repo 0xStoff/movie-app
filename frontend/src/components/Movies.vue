@@ -101,7 +101,7 @@ export default {
     addFilm() {
       const axios = require("axios");
 
-      console.log(this.movies);
+      // console.log(this.movies);
       // How to add a key properly? Vue component is not rerendering when adding film, this is why window.location was used.
       // this.addedMovie = this.movies;
 
@@ -119,6 +119,10 @@ export default {
         director: this.input.directorInput,
         description: this.input.descriptionInput,
       };
+      // const loginInfo = {
+      //   username: "stoff",
+      //   password: "Abcd1234",
+      // };
       // globale variable? data? andere möglichkeit?
       const config = {
         method: "post",
@@ -130,6 +134,30 @@ export default {
         },
         data: movie,
       };
+
+      // axios
+      //   .post(
+      //     "http://localhost:1338/movies",
+      //     {
+      //       title: "POST Test title",
+      //       director: "POST Test director",
+      //       description: "POST Test description",
+      //     },
+      //     {
+      //       // auth: {
+      //       //   username: "admin",
+      //       //   password: "Abcd1234",
+      //       // },
+      //       Authorization: { identifier: "admin ", password: "Abcd1234" },
+      //       "Content-Type": "application/json",
+      //     }
+      //   )
+      //   .then((response) => {
+      //     console.log("SUCCCESSSSSS " + response);
+      //   })
+      //   .catch(() => {
+      //     console.log("ERROR GAGDASGASG");
+      //   });
 
       // fetch ok? bessere möglichkeit?
       // object destructuring? besserer weg?
