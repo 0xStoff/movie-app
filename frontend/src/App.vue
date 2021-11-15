@@ -1,17 +1,13 @@
 <template>
   <div class="app-container">
-    <!-- <vue-toggle-btn></vue-toggle-btn> -->
     <theme-button class="theme-button"/>
-    <!-- <Header /> -->
     <Movies />
-    <!-- <Dark /> -->
   </div>
 </template>
 
 <script>
 import Movies from "./components/Movies.vue";
-// import VueToggleBtn from "../node_modules/vue-toggle-btn/toggle-btn.vue";
-// import Header from "./components/Header.vue";
+
 import ThemeButton from "./components/ThemeButton.vue";
 
 
