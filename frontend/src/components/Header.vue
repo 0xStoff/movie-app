@@ -23,7 +23,6 @@
   </div>
 </template>
 
-
 <script>
 import VueToggleBtn from "../../node_modules/vue-toggle-btn/toggle-btn.vue";
 export default {
@@ -34,10 +33,9 @@ export default {
     return {
       theme: "", //When this property is empty, the theme is set to the default theme i.e. light mode.
       isActive: false,
-    handle:{
-      color: '#ccc', // optional
-      }
-
+      handle: {
+        color: "#ccc", // optional
+      },
 
       // options: {
       //   COLOR,
@@ -65,10 +63,7 @@ export default {
     //     console.log("setter Function");
     //   }
     // },
-    
   },
 };
 </script>
-<style>
-</style>
-
+<style></style>
