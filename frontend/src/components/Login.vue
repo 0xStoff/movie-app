@@ -5,20 +5,34 @@
   <div>
     <h1 class="m-5">Movie App</h1>
     <button
-      class="btn btn-warning m-2 mb-5"
-      @click.prevent="loginUser"
-      type="button"
-    >
-      Login
-    </button>
+          type="submit"
+          class="btn btn-warning m-3 mb-5"
+          v-if="!isLoggedIn"
+        >
+        Logout
+        </button>
+        <button
+          class="btn btn-warning m-3 mb-5"
+          v-if="isLoggedIn"
+          type="button"
+        >
+          Login
+        </button>
     <button
-      class="btn btn-warning m-2 mb-5"
+      class="btn btn-warning m-3 mb-5"
       @click.prevent="loginUser"
       type="button"
     >
       Sign Up
     </button>
-    <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
+    <div>
+  <!-- <b-button v-b-modal.modal-1>Launch demo modal</b-button>
+
+  <b-modal id="modal-1" title="BootstrapVue">
+    <p class="my-4">Hello from modal!</p>
+  </b-modal> -->
+</div> 
+    <!-- <b-button v-b-modal.modal-prevent-closing>Open Modal</b-button>
     <div class="mt-3">
       Submitted Names:
       <div v-if="submittedNames.length === 0">--</div>
@@ -50,19 +64,57 @@
           ></b-form-input>
         </b-form-group>
       </form>
-    </b-modal>
+    </b-modal> -->
   </div>
 </template>
 
 <script>
+// import Vue from 'vue'
+// import { BootstrapVue } from 'bootstrap-vue'
+
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// Make BootstrapVue available throughout your project
+// Vue.use(BootstrapVue)
   export default {
     data() {
       return {
         name: '',
         nameState: null,
-        submittedNames: []
+        submittedNames: [],
+              isLoggedIn: false,
+
       }
     },
+      async mounted() {
+    
+    // const fetch = await this.authUserAndFetch("GET");
+    // this.movies = fetch.response.data;
+
+       const axios = require("axios");
+          const auth = {
+            identifier: "admin",
+        password: "Abcd1234",
+      };
+       try {        
+         this.responseAuth = await axios({
+        url: "http://localhost:1338/auth/local",
+        method: "POST",
+        data: auth,
+      });
+    this.isLoggedIn = true
+  } catch(err) {
+    // this.input
+    this.isLoggedIn = false;
+    console.log("Please Login")
+    // catches errors both in fetch and response.json
+    console.log(err);
+  }
+
+    
+  },
     methods: {
       checkFormValidity() {
         const valid = this.$refs.form.checkValidity()

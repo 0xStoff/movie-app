@@ -92,32 +92,26 @@ export default {
       isLoggedIn: false,
       isEditing: false,
       updatedMovie: null,
+      responseAuth: {},
     };
   },
   async mounted() {
-    const fetch = await this.authUserAndFetch("GET");
-    this.movies = fetch.response.data;
     
-  },
 
-  methods: {
-    // Async function for axios queries, pass index, method and data (optional)
-    async authUserAndFetch(id, method, data) {
-      const axios = require("axios");
-
-      const auth = {
-        identifier: "admin",
-        password: "Abcd12345",
+       const axios = require("axios");
+          const auth = {
+            identifier: "admin",
+        password: "Abcd1234",
       };
-
- 
-    let responseAuth;
        try {        
-         responseAuth = await axios({
+         this.responseAuth = await axios({
         url: "http://localhost:1338/auth/local",
         method: "POST",
         data: auth,
-      }).then(this.isLoggedIn = true);
+      });
+    this.isLoggedIn = true
+    const fetch = await this.authUserAndFetch("GET");
+    this.movies = fetch.response.data;
 
   } catch(err) {
     // this.input
@@ -127,6 +121,14 @@ export default {
     console.log(err);
   }
 
+    
+  },
+
+  methods: {
+    // Async function for axios queries, pass index, method and data (optional)
+    async authUserAndFetch(id, method, data) {
+
+       const axios = require("axios");
 
       // let id = "";
       if (isNaN(id)) {
@@ -136,7 +138,7 @@ export default {
         url: "http://localhost:1338/movies/" + id,
         method: method,
         headers: {
-          Authorization: `Bearer ${responseAuth.data.jwt}`,
+          Authorization: `Bearer ${this.responseAuth.data.jwt}`,
         },
         data: data,
       });
