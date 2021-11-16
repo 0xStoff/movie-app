@@ -15,6 +15,7 @@
     "strapi-plugin-import-export-content": "^0.4.2",
     "sweetalert2": "^11.1.9",
     "vue": "^2.6.14",
+    "vue-cli": "^2.9.6",
     "vue-sweetalert2": "^5.0.2",
     "vue-toggle-btn": "^0.1.2"
   },
