@@ -7,7 +7,6 @@
 
 <script>
 import Movies from "./components/Movies.vue";
-
 import ThemeButton from "./components/ThemeButton.vue";
 
 
@@ -20,24 +19,31 @@ export default {
 
 <style>
 
-/* Define styles for the default root window element */
+/* Define styles for the default root window element 
+
+100 (#1C1C1C) — used mainly for titles and bold text.
+200 (#585757) — used primarily for body text.
+300 (#969696) — widely used for small text and to fill icons.
+400 (#E8E8E8) — used for small details such as borders, dividers and line colors.*/
+
 :root {
-  --background-color-primary: #ebebeb;
+  --background-color-primary: #ffffff;
   --background-color-secondary: #fafafa;
-  --accent-color: #cacaca;
-  --text-primary-color: #060a13;
+  --accent-color: #131313;
+  --text-primary-color: #383838;
   --element-size: 4rem;
-    background-color: var( --background-color-secondary);
+    background-color: var( --background-color-primary);
 
 }
 
-/* Define styles for the root window with dark - mode preference */
+/* Define styles for the root window with dark - mode preference  */
+
 :root.dark-theme {
-  --background-color-primary: #060a13;
-  --background-color-secondary: #2d2d30;
-  --accent-color: #3f3f3f;
-  --text-primary-color: #ddd;
-  background-color: var( --background-color-secondary);
+  --background-color-primary: #212529;
+  --background-color-secondary: #1f1b24;
+  --accent-color: #eeeeee;
+  --text-primary-color: #eeeeee;
+  background-color: var( --background-color-primary);
 }
 
 
@@ -55,8 +61,12 @@ input {
   padding-top: 50px;
   font-size: 1em;
   padding-bottom: 100px;
-  background-color: var(--background-color-secondary);
+  background-color: var(--background-color-primary);
   color: var(--text-primary-color);
+}
+
+.card-body {
+  background-color: var(--background-color-secondary);
 }
 .card-title {
   font-size: 1.3em;
