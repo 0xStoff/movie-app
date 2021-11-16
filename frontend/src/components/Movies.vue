@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="m-5">Movie App</h1>
-    <div style="margin: 0 auto" class="form-group w-50">
+
+    <div v-if="isLoggedIn" style="margin: 0 auto" class="form-group w-50">
       <form>
         <input
           class="form-control mb-3"
@@ -65,7 +65,10 @@
           <button class="btn btn-warning m-1" @click="editMovie(movie)">
             edit
           </button>
-          <button class="btn btn-danger m-1" @click="deleteConfirmation(movie.id, index)">
+          <button
+            class="btn btn-danger m-1"
+            @click="deleteConfirmation(movie.id, index)"
+          >
             X
           </button>
         </div>
@@ -79,12 +82,6 @@ export default {
   data() {
     return {
       id: null,
-      member: {
-        name: "Hans",
-        instrument: "Bass",
-        baeLevel: "A++",
-      },
-
       input: {
         titleInput: "",
         directorInput: "",
@@ -92,35 +89,66 @@ export default {
       },
 
       movies: [],
+      isLoggedIn: false,
       isEditing: false,
       updatedMovie: null,
     };
   },
   async mounted() {
-    const fetch = await this.fetchData("GET");
+    const fetch = await this.authUserAndFetch("GET");
     this.movies = fetch.response.data;
+    
   },
 
   methods: {
     // Async function for axios queries, pass index, method and data (optional)
-    async fetchData(id, method, data) {
+    async authUserAndFetch(id, method, data) {
       const axios = require("axios");
+
+      const auth = {
+        identifier: "admin",
+        password: "Abcd12345",
+      };
+
+ 
+    let responseAuth;
+       try {        
+         responseAuth = await axios({
+        url: "http://localhost:1338/auth/local",
+        method: "POST",
+        data: auth,
+      }).then(this.isLoggedIn = true);
+
+  } catch(err) {
+    // this.input
+    this.isLoggedIn = false;
+    console.log("Please Login")
+    // catches errors both in fetch and response.json
+    console.log(err);
+  }
+
+
       // let id = "";
       if (isNaN(id)) {
         id = "";
-      } 
+      }
       const response = await axios({
         url: "http://localhost:1338/movies/" + id,
         method: method,
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM1MTcwOTY3LCJleHAiOjE2Mzc3NjI5Njd9.fk8vfoJ7kkCLzfX0-RRGWJZBdeKq6Ip2L0DoodoC31w",
+          Authorization: `Bearer ${responseAuth.data.jwt}`,
         },
         data: data,
       });
 
       return { response };
     },
+
+    // async isLoggedIn() {
+    //   // const axios = require("axios");
+
+    //   console.log("test");
+    // },
 
     // Add a film to backend and Array, do a success alert
     async addFilm() {
@@ -138,7 +166,6 @@ export default {
         buttonsStyling: false,
       });
 
-
       let missingInput = new Boolean(false);
       let propertyArr = [];
       for (const property in movie) {
@@ -150,9 +177,8 @@ export default {
 
       if (missingInput == true) {
         swal.fire(`${propertyArr}`, "is missing", "error");
-      } 
-      else {
-        const fetch = await this.fetchData(NaN, "POST", movie);
+      } else {
+        const fetch = await this.authUserAndFetch(NaN, "POST", movie);
 
         this.movies.push(movie);
 
@@ -192,7 +218,7 @@ export default {
         buttonsStyling: false,
       });
 
-      const fetch = await this.fetchData(id, "DELETE");
+      const fetch = await this.authUserAndFetch(id, "DELETE");
 
       swal
         .fire({
@@ -221,11 +247,7 @@ export default {
             /* Read more about handling dismissals below */
             result.dismiss === this.$swal.DismissReason.cancel
           ) {
-            swal.fire(
-              "Cancelled",
-              "Your Movie is safe :)",
-              "error"
-            );
+            swal.fire("Cancelled", "Your Movie is safe :)", "error");
           }
         });
     },
@@ -238,7 +260,13 @@ export default {
       this.input.descriptionInput = movie.description;
     },
     async updateMovie() {
-      const axios = require("axios");
+      const swal = this.$swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-warning m-2",
+          cancelButton: "btn btn-danger m-2",
+        },
+        buttonsStyling: false,
+      });
       let id = this.updatedMovie.id;
 
       this.updatedMovie.title = this.input.titleInput;
@@ -251,31 +279,14 @@ export default {
         description: this.updatedMovie.description,
       };
 
+      const fetch = await this.authUserAndFetch(id, "PUT", movie);
 
-      const fetch = await this.fetchData(id, "PUT", movie);
-console.log(fetch);
-      const config = {
-        method: "put",
-        url: "http://localhost:1338/movies/" + id,
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjM1MTcwOTY3LCJleHAiOjE2Mzc3NjI5Njd9.fk8vfoJ7kkCLzfX0-RRGWJZBdeKq6Ip2L0DoodoC31w",
-        },
-        data: movie,
-      };
-
-      axios(config)
-        .then((response) => {
-          this.isEditing = false;
-          this.updatedMovie = null;
-          this.input.titleInput = "";
-          this.input.directorInput = "";
-          this.input.descriptionInput = "";
-          this.$swal(response.data.title, "Updated successfully!", "success");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      this.isEditing = false;
+      this.updatedMovie = null;
+      this.input.titleInput = "";
+      this.input.directorInput = "";
+      this.input.descriptionInput = "";
+      swal.fire(fetch.response.data.title, "Updated successfully!", "success");
     },
   },
 };
@@ -300,16 +311,4 @@ ul {
 h1 {
   font-size: 4em;
 }
-/* 
-.btn-warning {
-  background-color: var( --text-primary-color);
-  color:   var( --background-color-primary);
-
-} */
-/* 
-.btn:hover {
-  background-color: var( --accent-color);
-  color: black
-}  */
-
 </style>

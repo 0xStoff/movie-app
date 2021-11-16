@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "logins",
+  "info": {
+    "name": "Login"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "email",
+      "required": true
+    },
+    "password": {
+      "type": "password",
+      "required": true
+    }
+  }
+}

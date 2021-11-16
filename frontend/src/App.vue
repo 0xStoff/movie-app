@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <theme-button class="theme-button"/>
+   <Login />
     <Movies />
   </div>
 </template>
@@ -8,12 +9,12 @@
 <script>
 import Movies from "./components/Movies.vue";
 import ThemeButton from "./components/ThemeButton.vue";
-
+import Login from "./components/Login";
 
 
 export default {
   name: "App",
-  components: { Movies, ThemeButton },
+  components: { Movies, ThemeButton, Login },
 };
 </script>
 
