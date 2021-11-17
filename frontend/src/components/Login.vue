@@ -146,3 +146,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
     }
   }
 </script>
+
+<style scoped>
+
+h1 {
+  font-size: 4em;
+}
+</style>
