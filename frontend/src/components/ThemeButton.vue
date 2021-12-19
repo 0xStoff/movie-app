@@ -94,7 +94,8 @@ label{
   height: calc(var(--element-size) * 0.4);
   width: calc(var(--element-size) * 0.4);
   transform: translateX(0);
-  transition: transform 0.3s ease, background-color 0.5s ease;
+  transition: 
+  transform 0.3s ease, background-color 0.5s ease;
 }
 
 .switch-toggle-checked {

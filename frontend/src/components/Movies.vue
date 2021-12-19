@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div v-if="isLoggedIn" style="margin: 0 auto" class="form-group w-50">
       <form>
         <input
@@ -96,39 +95,35 @@ export default {
     };
   },
   async mounted() {
+    const axios = require("axios");
+    const auth = {
+      identifier: "admin",
+      password: "Abcd1234",
+    };
     
-
-       const axios = require("axios");
-          const auth = {
-            identifier: "admin",
-        password: "Abcd1234",
-      };
-       try {        
-         this.responseAuth = await axios({
+    try {
+      this.responseAuth = await axios({
         url: "http://localhost:1338/auth/local",
         method: "POST",
         data: auth,
       });
-    this.isLoggedIn = true
-    const fetch = await this.authUserAndFetch("GET");
-    this.movies = fetch.response.data;
 
-  } catch(err) {
-    // this.input
-    this.isLoggedIn = false;
-    console.log("Please Login")
-    // catches errors both in fetch and response.json
-    console.log(err);
-  }
-
-    
+      this.isLoggedIn = true;
+      const fetch = await this.authUserAndFetch("GET");
+      this.movies = fetch.response.data;
+    } catch (err) {
+      // this.input
+      this.isLoggedIn = false;
+      console.log("Please Login");
+      // catches errors both in fetch and response.json
+      console.log(err);
+    }
   },
 
   methods: {
     // Async function for axios queries, pass index, method and data (optional)
     async authUserAndFetch(id, method, data) {
-
-       const axios = require("axios");
+      const axios = require("axios");
 
       // let id = "";
       if (isNaN(id)) {
